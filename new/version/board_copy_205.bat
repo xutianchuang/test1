@@ -1,1 +1,0 @@
-copy ..\..\config\board_cco_def.h ..\iar_proj_zb205\board_cco_def.h /y
