@@ -54,7 +54,6 @@
 #define AESKEYMODE10			0x00000004
 #define AESCMODE			0x00000001
 
-
 #define KEY_MODE_128	      4
 #define KEY_MODE_192	      6
 #define KEY_MODE_256	      8

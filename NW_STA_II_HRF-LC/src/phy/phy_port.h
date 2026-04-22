@@ -6,56 +6,60 @@
 #include "ZB204.h"
 #elif defined(ZB205_CHIP)
 #include "ZB205.h"
+#elif defined(ZB206_CHIP)
+#include "ZB206.h" // Assuming ZB206.h exists and contains necessary definitions
+#include "afe_rf_zb206.h"
+#else
+#error "Unsupported chip type"
 #endif
-
-
 
 #ifdef __cplusplus
-extern  "C" {
+extern "C"
+{
 #endif
 
-extern const uint32_t PHYAUsedSCTable[4][16];
+  extern const uint32_t PHYAUsedSCTable[4][16];
 
-extern const uint16_t Tone_Phase_Tab_SG[128];
-extern const uint16_t Tone_Phase_Tab_NG[128];
-extern const uint16_t Preamb_Tone_Phase_Tab_SG[128];
-extern const uint16_t Preamb_Tone_Phase_Tab_NG[128];
-extern const uint8_t OffsetTable_QPSK_I_SG[8];
-extern const uint8_t OffsetTable_QPSK_I_NG[12];
+  extern const uint16_t Tone_Phase_Tab_SG[128];
+  extern const uint16_t Tone_Phase_Tab_NG[128];
+  extern const uint16_t Preamb_Tone_Phase_Tab_SG[128];
+  extern const uint16_t Preamb_Tone_Phase_Tab_NG[128];
+  extern const uint8_t OffsetTable_QPSK_I_SG[8];
+  extern const uint8_t OffsetTable_QPSK_I_NG[12];
 
-extern const uint16_t* Preamb_Tone_Phase_Tab[2];
-extern const uint16_t* Tone_Phase_Tab[2];
-extern uint8_t InterNumPerGroupTab[6];
-extern const int16_t tx_band0_bpf_gain[6];
-extern const int16_t tx_band0_bpf_a1[6];
-extern const int16_t tx_band0_bpf_a2[6];
-extern const int16_t tx_band1_bpf_gain[6];
-extern const int16_t tx_band1_bpf_a1[6];
-extern const int16_t tx_band1_bpf_a2[6];
-extern const int16_t tx_band2_bpf_gain[6];
-extern const int16_t tx_band2_bpf_a1[6];
-extern const int16_t tx_band2_bpf_a2[6];
+  extern const uint16_t *Preamb_Tone_Phase_Tab[2];
+  extern const uint16_t *Tone_Phase_Tab[2];
+  extern uint8_t InterNumPerGroupTab[6];
+  extern const int16_t tx_band0_bpf_gain[6];
+  extern const int16_t tx_band0_bpf_a1[6];
+  extern const int16_t tx_band0_bpf_a2[6];
+  extern const int16_t tx_band1_bpf_gain[6];
+  extern const int16_t tx_band1_bpf_a1[6];
+  extern const int16_t tx_band1_bpf_a2[6];
+  extern const int16_t tx_band2_bpf_gain[6];
+  extern const int16_t tx_band2_bpf_a1[6];
+  extern const int16_t tx_band2_bpf_a2[6];
 extern const int16_t tx_band2_bpf_gain_gw[6];
 extern const int16_t tx_band2_bpf_a1_gw[6];
 extern const int16_t tx_band2_bpf_a2_gw[6];
 extern const int16_t tx_band2_bpf_gain_nw[6];
 extern const int16_t tx_band2_bpf_a1_nw[6];
 extern const int16_t tx_band2_bpf_a2_nw[6];
-extern const int16_t tx_band3_bpf_gain[6];
-extern const int16_t tx_band3_bpf_a1[6];
-extern const int16_t tx_band3_bpf_a2[6];
-extern const int16_t pulse_rm_cfg_a1_band2[8];
-extern const int16_t pulse_rm_cfg_b1_band2[8];
-extern const int16_t pulse_rm_cfg_b2_band2[8];
-extern const int16_t pulse_rm_cfg_a1_band1[8];
-extern const int16_t pulse_rm_cfg_b1_band1[8];
-extern const int16_t pulse_rm_cfg_b2_band1[8];
-extern const int16_t tx_band0_comp_phase[512];
-extern const int16_t tx_band1_comp_phase[512];
+  extern const int16_t tx_band3_bpf_gain[6];
+  extern const int16_t tx_band3_bpf_a1[6];
+  extern const int16_t tx_band3_bpf_a2[6];
+  extern const int16_t pulse_rm_cfg_a1_band2[8];
+  extern const int16_t pulse_rm_cfg_b1_band2[8];
+  extern const int16_t pulse_rm_cfg_b2_band2[8];
+  extern const int16_t pulse_rm_cfg_a1_band1[8];
+  extern const int16_t pulse_rm_cfg_b1_band1[8];
+  extern const int16_t pulse_rm_cfg_b2_band1[8];
+  extern const int16_t tx_band0_comp_phase[512];
+  extern const int16_t tx_band1_comp_phase[512];
 extern const int16_t tx_band2_comp_phase[512];
-extern const int16_t tx_band3_comp_phase[512];
 extern const int16_t tx_band2_comp_phase_gw[512];
 extern const int16_t tx_band2_comp_phase_nw[512];
+extern const int16_t tx_band3_comp_phase[512];
 extern const int16_t rx_band0_bpf_gain[6];
 extern const int16_t rx_band0_bpf_a1[6];
 extern const int16_t rx_band0_bpf_a2[6];
@@ -83,309 +87,371 @@ extern const int16_t rx_band3_comp_phase[512];
 extern const uint16_t robo_param_tab_ng[30][8];
 extern const uint16_t robo_param_tab_sg[28][8];
 extern const int16_t nbi_cal_cos_tab[512];
+
+extern const int16_t tx_all_pass_gain[6];
+extern const int16_t tx_all_pass_a1[6];
+extern const int16_t tx_all_pass_a2[6];
  
-extern u8 HPLC_ChlPower[4];
-extern const u8 HPLC_TestChlPower[4];
-extern const u8 HPLC_PowerOffPower[4];
+#if defined(ZB206_CHIP)
+extern const int16_t tx_band0_bpf_b1[6];
+extern const int16_t tx_band1_bpf_b1[6];
+extern const int16_t tx_band2_bpf_b1[6];
+extern const int16_t tx_band3_bpf_b1[6];
+extern const int16_t tx_band0_bpf_b2[6];
+extern const int16_t tx_band1_bpf_b2[6];
+extern const int16_t tx_band2_bpf_b2[6];
+extern const int16_t tx_band3_bpf_b2[6];
+extern const int16_t rx_1st_band0_bpf_gain[6];
+extern const int16_t rx_1st_band1_bpf_gain[6];
+extern const int16_t rx_1st_band2_bpf_gain[6];
+extern const int16_t rx_1st_band3_bpf_gain[6];
+extern const int16_t rx_1st_band0_bpf_a1[6];
+extern const int16_t rx_1st_band1_bpf_a1[6];
+extern const int16_t rx_1st_band2_bpf_a1[6];
+extern const int16_t rx_1st_band3_bpf_a1[6];
+extern const int16_t rx_1st_band0_bpf_b1[6];
+extern const int16_t rx_1st_band1_bpf_b1[6];
+extern const int16_t rx_1st_band2_bpf_b1[6];
+extern const int16_t rx_1st_band3_bpf_b1[6];
+extern const int16_t rx_1st_band0_bpf_b2[6];
+extern const int16_t rx_1st_band1_bpf_b2[6];
+extern const int16_t rx_1st_band2_bpf_b2[6];
+extern const int16_t rx_1st_band3_bpf_b2[6];
+extern const int16_t rx_band0_bpf_b1[6];
+extern const int16_t rx_band1_bpf_b1[6];
+extern const int16_t rx_band2_bpf_b1[6];
+extern const int16_t rx_band3_bpf_b1[6];
+extern const int16_t rx_band0_bpf_b2[6];
+extern const int16_t rx_band1_bpf_b2[6];
+extern const int16_t rx_band2_bpf_b2[6];
+extern const int16_t rx_band3_bpf_b2[6];
+extern const int16_t tone_rm_cfg_gain[8];
+extern const int16_t tone_rm_cfg_gain[8];
+extern const int16_t pulse_rm_cfg_gain_band2[8];
+extern const int16_t pulse_rm_cfg_a1_band2[8];
+extern const int16_t pulse_rm_cfg_b1_band2[8];
+extern const int16_t pulse_rm_cfg_b2_band2[8];
+extern const int16_t pulse_rm_cfg_gain_band1[8];
+extern const int16_t pulse_rm_cfg_a1_band1[8];
+extern const int16_t pulse_rm_cfg_b1_band1[8];
+extern const int16_t pulse_rm_cfg_b2_band1[8];
+extern const int16_t edge_flt0[4];
+extern const int16_t edge_flt1[5];
+extern const int16_t edge_flt2[6];
+extern const int16_t edge_flt3[7];
+extern const int16_t edge_flt0_nbi[4];
+extern const int16_t edge_flt1_nbi[5];
+extern const int16_t edge_flt2_nbi[6];
+extern const int16_t edge_flt3_nbi[7];
+#endif
 
-#define MPDU_FRAME_TYPE_BEACON              0
-#define MPDU_FRAME_TYPE_SOF                 1
-#define MPDU_FRAME_TYPE_ACK                 2
-#define MPDU_FRAME_TYPE_COORDINATION        3 
-
-
-typedef struct{
-	uint8_t FrameType:3;
-	uint8_t NetType:5;	
-	uint8_t NetId[3];
-	uint8_t Variable[8];
-	uint8_t VariableLast:4;
-	uint8_t Version:4;
-	uint8_t FCRC[3]; 
-}FC_t,*FC_p;
-
-typedef struct{
-	uint32_t timesTamp;
-	uint16_t S_TEI:12;
-	uint16_t tmi:4;
-	uint16_t symbolNum:9;
-	uint16_t line:3;
-}BeaconVar,*BeaconVar_p;
-
-typedef struct{
-	uint32_t S_TEI:12;
-	uint32_t D_TEI:12;
-	uint32_t lid:8;
-	uint16_t len:12;
-	uint16_t pbNum:4;
-	uint16_t symbolNum:9;
-	uint16_t broadcastFlag:1;
-	uint16_t retransmission:1;
-	uint16_t encryptFlag:1;
-	uint16_t tmi:4;
-	uint16_t tmiExt:4; 
-
-}SofVar,*SofVar_p;
-
-//enum {FAIL = 0, SUCCESS = !FAIL};
-typedef		int		bool_t;
+extern const uint8_t HPLC_ChlPower[4];
+extern const uint8_t HPLC_HighPower[4];
+extern const uint8_t HPLC_TestChlPower[4];
+extern const uint8_t HPLC_PowerOffPower[4];
+extern const u8 HRF_HighLinePower;
+#define MPDU_FRAME_TYPE_BEACON 0
+#define MPDU_FRAME_TYPE_SOF 1
+#define MPDU_FRAME_TYPE_ACK 2
+#define MPDU_FRAME_TYPE_COORDINATION 3
 
 typedef struct
 {
-	uint16_t BitsInLastSym;
-	uint16_t TotalGroup;
-	uint16_t N_PadIn;
-	uint16_t PBSize;
-	uint8_t InterShiftStepIndex;
-	uint8_t ToneNumPerInter;
-	uint8_t CopyNum;
-	uint8_t Mod;
-	uint8_t Rate;
-	uint8_t CopyNumIdx;
-	uint8_t PBSizeIdx;
-	uint8_t pf0_pl_prr;
-	uint8_t pf1_pl_prr;
-}TMI_Para;
+  uint8_t FrameType : 3;
+  uint8_t NetType : 5;
+  uint8_t NetId[3];
+  uint8_t Variable[8];
+  uint8_t VariableLast : 4;
+  uint8_t Version : 4;
+  uint8_t FCRC[3];
+} FC_t, *FC_p;
+
+typedef struct
+{
+  uint32_t timesTamp;
+  uint16_t S_TEI : 12;
+  uint16_t tmi : 4;
+  uint16_t symbolNum : 9;
+  uint16_t line : 3;
+} BeaconVar, *BeaconVar_p;
+
+typedef struct
+{
+  uint32_t S_TEI : 12;
+  uint32_t D_TEI : 12;
+  uint32_t lid : 8;
+  uint16_t len : 12;
+  uint16_t pbNum : 4;
+  uint16_t symbolNum : 9;
+  uint16_t broadcastFlag : 1;
+  uint16_t retransmission : 1;
+  uint16_t encryptFlag : 1;
+  uint16_t tmi : 4;
+  uint16_t tmiExt : 4;
+
+} SofVar, *SofVar_p;
+
+
+// enum {FAIL = 0, SUCCESS = !FAIL};
+#if !defined(ZB206_CHIP)
+typedef		int		bool_t;
+#endif
+typedef struct
+{
+  uint16_t BitsInLastSym;
+  uint16_t TotalGroup;
+  uint16_t N_PadIn;
+  uint16_t PBSize;
+  uint8_t InterShiftStepIndex;
+  uint8_t ToneNumPerInter;
+  uint8_t CopyNum;
+  uint8_t Mod;
+  uint8_t Rate;
+  uint8_t CopyNumIdx;
+  uint8_t PBSizeIdx;
+  uint8_t pf0_pl_prr;
+  uint8_t pf1_pl_prr;
+} TMI_Para;
 
 extern void calc_tmi_para(TMI_Para *params, uint8_t tmi, uint8_t tmiExt);
 extern int calc_symbol_num(TMI_Para *params, uint8_t pb_num);
 
+typedef enum
+{
+  PLC_STATE_IDLE = 0, // ¿ÕÏĞ×´Ì¬£¬ÎŞÊı¾İ°üÕıÔÚ·¢ËÍ»òÕß½ÓÊÕ
 
-typedef enum{
-	PLC_STATE_IDLE = 0,		//ç©ºé—²çŠ¶æ€ï¼Œæ— æ•°æ®åŒ…æ­£åœ¨å‘é€æˆ–è€…æ¥æ”¶
-							
-	PLC_STATE_RECEIVING,	//æ•°æ®æ¥æ”¶ä¸­ï¼Œä»Syncå¼€å§‹ æ„å‘³ç€å¯èƒ½å‡ºç°å¸§
-	PLC_STATE_RXBUSY,         //å·²ç»ç¡®è®¤æ¥åˆ°äº†å¸§ å¹¶ä¸”æ­£åœ¨å¤„ç†
+  PLC_STATE_RECEIVING, // Êı¾İ½ÓÊÕÖĞ£¬´ÓSync¿ªÊ¼ ÒâÎ¶×Å¿ÉÄÜ³öÏÖÖ¡
+  PLC_STATE_RXBUSY,    // ÒÑ¾­È·ÈÏ½Óµ½ÁËÖ¡ ²¢ÇÒÕıÔÚ´¦Àí
 
-	PLC_STATE_SENDING		//æ•°æ®å‘é€ä¸­ï¼Œä»æ‰“å¼€LineDriverå¼€å§‹
-}PLC_STATE;
+  PLC_STATE_SENDING // Êı¾İ·¢ËÍÖĞ£¬´Ó´ò¿ªLineDriver¿ªÊ¼
+} PLC_STATE;
 
-
-
-//ä½¿èƒ½NVICä¸­BPLCä¸­æ–­,ä½¿èƒ½BPLCæ¨¡å—,è¿”å›å›ºå®šä¸º0
+// Ê¹ÄÜNVICÖĞBPLCÖĞ¶Ï,Ê¹ÄÜBPLCÄ£¿é,·µ»Ø¹Ì¶¨Îª0
 int BPLC_Start(void);
 
-//å¤±èƒ½NVICä¸­BPLCä¸­æ–­,å¤±èƒ½BPLCæ¨¡å—,è¿”å›å›ºå®šä¸º0
+// Ê§ÄÜNVICÖĞBPLCÖĞ¶Ï,Ê§ÄÜBPLCÄ£¿é,·µ»Ø¹Ì¶¨Îª0
 int BPLC_Stop(void);
 
 void BPLC_DisEnableAfe(void);
 
-//ä½¿èƒ½ä¸­æ–­,ä»¥ä¸‹ä¸€ä¸ªæˆ–å¤šä¸ª
-//BPLC_BBP_INT_EN_RXPLRCVINTEN_Msk
-//BPLC_BBP_INT_EN_RXFCRCVINTEN_Msk
-//BPLC_BBP_INT_EN_FRAMESYNCEDINTEN_Msk
-//BPLC_BBP_INT_EN_TXENDINTEN_Msk
-//BPLC_BBP_INT_EN_INITIALENDINTEN_Msk
-//BPLC_BBP_INT_EN_TXDMADONEINTEN_Msk
+// Ê¹ÄÜÖĞ¶Ï,ÒÔÏÂÒ»¸ö»ò¶à¸ö
+// BPLC_BBP_INT_EN_RXPLRCVINTEN_Msk
+// BPLC_BBP_INT_EN_RXFCRCVINTEN_Msk
+// BPLC_BBP_INT_EN_FRAMESYNCEDINTEN_Msk
+// BPLC_BBP_INT_EN_TXENDINTEN_Msk
+// BPLC_BBP_INT_EN_INITIALENDINTEN_Msk
+// BPLC_BBP_INT_EN_TXDMADONEINTEN_Msk
 void BPLC_EnableIRQ(uint32_t irq);
 
-//å¤±èƒ½ä¸­æ–­,ä»¥ä¸‹ä¸€ä¸ªæˆ–å¤šä¸ª
-//BPLC_BBP_INT_EN_RXPLRCVINTEN_Msk
-//BPLC_BBP_INT_EN_RXFCRCVINTEN_Msk
-//BPLC_BBP_INT_EN_FRAMESYNCEDINTEN_Msk
-//BPLC_BBP_INT_EN_TXENDINTEN_Msk
-//BPLC_BBP_INT_EN_INITIALENDINTEN_Msk
-//BPLC_BBP_INT_EN_TXDMADONEINTEN_Msk
+// Ê§ÄÜÖĞ¶Ï,ÒÔÏÂÒ»¸ö»ò¶à¸ö
+// BPLC_BBP_INT_EN_RXPLRCVINTEN_Msk
+// BPLC_BBP_INT_EN_RXFCRCVINTEN_Msk
+// BPLC_BBP_INT_EN_FRAMESYNCEDINTEN_Msk
+// BPLC_BBP_INT_EN_TXENDINTEN_Msk
+// BPLC_BBP_INT_EN_INITIALENDINTEN_Msk
+// BPLC_BBP_INT_EN_TXDMADONEINTEN_Msk
 void BPLC_DisableIRQ(uint32_t irq);
 
-//æ¸…é™¤ä¸­æ–­çŠ¶æ€,ä»¥ä¸‹ä¸€ä¸ªæˆ–å¤šä¸ª
-//BPLC_BBP_STATUS_RXPLRCVFLAG_Msk
-//BPLC_BBP_STATUS_RXFCRCVFLAG_Msk
-//BPLC_BBP_STATUS_RXFCDECODEFINISH_Msk
-//BPLC_BBP_STATUS_FRAMESYNCEDFLAG_Msk
-//BPLC_BBP_STATUS_TXENDFLAG_Msk
-//BPLC_BBP_STATUS_INITIALENDFLAG_Msk
-//BPLC_BBP_STATUS_RXPLCRCRES_Msk
-//BPLC_BBP_STATUS_RXFCCRCRES_Msk
-//BPLC_BBP_STATUS_TXDMADONEFLAG_Msk
+// Çå³ıÖĞ¶Ï×´Ì¬,ÒÔÏÂÒ»¸ö»ò¶à¸ö
+// BPLC_BBP_STATUS_RXPLRCVFLAG_Msk
+// BPLC_BBP_STATUS_RXFCRCVFLAG_Msk
+// BPLC_BBP_STATUS_RXFCDECODEFINISH_Msk
+// BPLC_BBP_STATUS_FRAMESYNCEDFLAG_Msk
+// BPLC_BBP_STATUS_TXENDFLAG_Msk
+// BPLC_BBP_STATUS_INITIALENDFLAG_Msk
+// BPLC_BBP_STATUS_RXPLCRCRES_Msk
+// BPLC_BBP_STATUS_RXFCCRCRES_Msk
+// BPLC_BBP_STATUS_TXDMADONEFLAG_Msk
 void BPLC_ClearIRQ(uint32_t irq);
 
-//è·å–å½“å‰é¢‘æ®µ,è¿”å›å€¼(0,1,2,3)
+// »ñÈ¡µ±Ç°Æµ¶Î,·µ»ØÖµ(0,1,2,3)
 uint8_t BPLC_TxFrequenceGet(void);
 
-//è®¾ç½®é¢‘æ®µ(è®¾ç½®åŸºå¸¦åŠToneMask),è¾“å…¥(0,1,2,3)
-//void BPLC_TxFrequenceSet(uint8_t num);æ›´æ”¹ä¸ºç›´æ¥è°ƒç”¨HPLC_PhyInit
+// ÉèÖÃÆµ¶Î(ÉèÖÃ»ù´ø¼°ToneMask),ÊäÈë(0,1,2,3)
+// void BPLC_TxFrequenceSet(uint8_t num);¸ü¸ÄÎªÖ±½Óµ÷ÓÃHPLC_PhyInit
 
-//è·å–å½“å‰Txå¢ç›Š,è¿”å›å€¼(0~0x1F)
+// »ñÈ¡µ±Ç°TxÔöÒæ,·µ»ØÖµ(0~0x1F)
 uint8_t BPLC_GetTxGain(void);
 
-//è®¾ç½®Txå¢ç›Š,è¾“å…¥(0~0x1F)
+// ÉèÖÃTxÔöÒæ,ÊäÈë(0~0x1F)
 void BPLC_SetTxGain(uint8_t value);
-
-//NBI è½¯ä»¶å¼€å¯
+void BPLC_SetNormalModeParam();
+void BPLC_SetTestModeParam();
+//NBI Èí¼ş¿ªÆô
 void BPLC_NbiDet(void);
-
-//è·å–å½“å‰ToneMask,è¿”å›16ä¸ªå­—çš„æ•°ç»„é¦–åœ°å€
+// »ñÈ¡µ±Ç°ToneMask,·µ»Ø16¸ö×ÖµÄÊı×éÊ×µØÖ·
 uint32_t *BPLC_GetToneMask(void);
-
-
 
 typedef void (*SendCallback)(bool_t status);
 
-
-typedef enum {
+typedef enum
+{
   CLOSE_LINEDRIVER,
   OPEND_LINEDRIVER,
-  
-}linedriver_control;
 
-typedef void (*OptionCallback)(uint32_t IsOpen,uint32_t phase);
+} linedriver_control;
 
-#define RdReg(addr)    	        (*(uint32_t*)(addr))  
-#define WrReg(addr,data)	((*(uint32_t*)(addr))=(data))
+typedef void (*OptionCallback)(uint32_t IsOpen, uint32_t phase);
 
+#define RdReg(addr) (*(uint32_t *)(addr))
+#define WrReg(addr, data) ((*(uint32_t *)(addr)) = (data))
 
-//NTBå‘é€,NTBä¸ºæ•°æ®å‘é€æ—¶åˆ»çš„NTB,*mpduä¸ºMPDU(å¸§æ§åˆ¶+å¸§è½½è·)æ•°æ®,lenä¸ºMPDUå¸§æ§åˆ¶+å¸§è½½è·é•¿åº¦
-void BPLC_SendAtNtb(uint32_t NTB, uint8_t *mpdu, uint16_t len, SendCallback callback, OptionCallback optionFun,uint32_t phase);
+// NTB·¢ËÍ,NTBÎªÊı¾İ·¢ËÍÊ±¿ÌµÄNTB,*mpduÎªMPDU(Ö¡¿ØÖÆ+Ö¡ÔØºÉ)Êı¾İ,lenÎªMPDUÖ¡¿ØÖÆ+Ö¡ÔØºÉ³¤¶È
+void BPLC_SendAtNtb(uint32_t NTB, uint8_t *mpdu, uint16_t len, SendCallback callback, OptionCallback optionFun, uint32_t phase);
 
-//ç«‹å³å‘é€,*mpduä¸ºMPDU(å¸§æ§åˆ¶+å¸§è½½è·)æ•°æ®,lenä¸ºMPDUå¸§æ§åˆ¶+å¸§è½½è·é•¿åº¦
-void BPLC_SendImmediate(uint8_t *mpdu, uint16_t len, SendCallback callback, OptionCallback optionFun,uint32_t phase);
+// Á¢¼´·¢ËÍ,*mpduÎªMPDU(Ö¡¿ØÖÆ+Ö¡ÔØºÉ)Êı¾İ,lenÎªMPDUÖ¡¿ØÖÆ+Ö¡ÔØºÉ³¤¶È
+void BPLC_SendImmediate(uint8_t *mpdu, uint16_t len, SendCallback callback, OptionCallback optionFun, uint32_t phase);
 
 void BPLC_GoTest(int mode);
 typedef struct
 {
 
-	uint32_t sync_ntb;   //æ¥æ”¶mpduçš„sync NTB
-//  uint32_t len;         //MPDU(å¸§æ§åˆ¶+å¸§è½½è·)é•¿åº¦
-	union
-	{
-		struct
-		{
-			int16_t rssi;        //ä¿¡å·å¼ºåº¦,æœ‰ç¬¦å·å€¼ï¼Œ1dbmä¸ºæ­¥è¿›,NPWæ— æ³•è®¡ç®—ï¼Œç»™å‡ºçš„å€¼åŒä¿¡å™ªæ¯”
-			int16_t snr;         //ä¿¡å™ªæ¯”,æœ‰ç¬¦å·å€¼ï¼Œ0.25dbä¸ºæ­¥è¿›
-			u8 band;
+  uint32_t sync_ntb; // ½ÓÊÕmpduµÄsync NTB
+  //  uint32_t len;         //MPDU(Ö¡¿ØÖÆ+Ö¡ÔØºÉ)³¤¶È
+	uint8_t link;       //½ÓÊÕÖ¡ÀàĞÍ 0 HPLC  1HRF
+  union
+  {
+    struct
+    {
+			int16_t rssi;        //ĞÅºÅÇ¿¶È,ÓĞ·ûºÅÖµ£¬1dbmÎª²½½ø,NPWÎŞ·¨¼ÆËã£¬¸ø³öµÄÖµÍ¬ĞÅÔë±È
+			int16_t snr;         //ĞÅÔë±È,ÓĞ·ûºÅÖµ£¬0.25dbÎª²½½ø
+			uint8_t band;
 		};
 		struct
 		{
 			int8_t hrf_rssi;
 			int8_t hrf_snr;
-			int8_t phr_mcs;
-			uint16_t channel_index;
-			int32_t freq;               //æ— çº¿å¸¦æ¥çš„é¢‘åå€¼
+			uint8_t option;
+			uint8_t channel;
+			uint8_t phr_mcs;
 		};
-	};
+  };
 
-}BPLC_recv_para;
+} BPLC_recv_para;
 
-
-//åˆ¤æ–­ç”¨æˆ·ç¼“å†²åŒºæ˜¯å¦å¯å¡«å……æ¥æ”¶æ•°æ®
+// ÅĞ¶ÏÓÃ»§»º³åÇøÊÇ·ñ¿ÉÌî³ä½ÓÊÕÊı¾İ
 uint8_t IsUserBufLock(void);
-//ç”¨æˆ·ç¼“å†²åŒºä¸Šé”,æ‰§è¡Œæ¥æ”¶å›è°ƒå‡½æ•°å‰è°ƒç”¨
+// ÓÃ»§»º³åÇøÉÏËø,Ö´ĞĞ½ÓÊÕ»Øµ÷º¯ÊıÇ°µ÷ÓÃ
 void UnlockUserBuf(void);
-//ç”¨æˆ·ç¼“å†²åŒºè§£é”,ç”¨æˆ·å¤„ç†å®Œç¼“å†²åŒºæ•°æ®åè°ƒç”¨
+// ÓÃ»§»º³åÇø½âËø,ÓÃ»§´¦ÀíÍê»º³åÇøÊı¾İºóµ÷ÓÃ
 void UnlockUserFcBuf(void);
 
 
 typedef void (*RxOverFlowCallback)(void);  
+
 typedef void (*FrameControlCallback)(uint8_t *fch, BPLC_recv_para *para, bool_t status);
-typedef void (*ReceiveCallback)(uint8_t *mpdu, uint16_t len, uint8_t crc_res, BPLC_recv_para * para);
+typedef void (*ReceiveCallback)(uint8_t *mpdu, uint16_t len, uint8_t crc_res, BPLC_recv_para *para);
 void SetReceiveCallback(ReceiveCallback cb_recv, FrameControlCallback cb_fch, RxOverFlowCallback cb_overflow);
 /*
-//è·å–çŠ¶æ€
+//»ñÈ¡×´Ì¬
 */
 PLC_STATE BPLC_GetState(void);
 
 int GetSNR_DB(uint32_t signal, uint32_t noise);
 
-
-//è·å–å½“å‰NTBå€¼,è¿”å›NTB
+// »ñÈ¡µ±Ç°NTBÖµ,·µ»ØNTB
 uint32_t BPLC_GetNTB(void);
 
-//è·å–SYNC NTBå€¼,è¿”å›NTB
+// »ñÈ¡SYNC NTBÖµ,·µ»ØNTB
 uint32_t BPLC_GetSYNC_NTB(void);
 
+// ¹ıÁãÒÀÀµÓÚGPIOµÄÖĞ¶Ï Òò´ËÔÚÊ¹ÓÃ¹ıÁãÖ®Ç° ĞèÒª×Ô¼ºÅäÖÃGPIOµÄÖĞ¶Ï
 
-
-
-
-//è¿‡é›¶ä¾èµ–äºGPIOçš„ä¸­æ–­ å› æ­¤åœ¨ä½¿ç”¨è¿‡é›¶ä¹‹å‰ éœ€è¦è‡ªå·±é…ç½®GPIOçš„ä¸­æ–­
-
-//æ‰“å¼€è¿‡é›¶æ•è·
+// ´ò¿ª¹ıÁã²¶»ñ
 extern void ZeroCrossx_Start(uint32_t no);
-//å…³é—­è¿‡é›¶æ•è·
+// ¹Ø±Õ¹ıÁã²¶»ñ
 extern void ZeroCrossx_Stop(uint32_t no);
-//è¿‡é›¶æ•è·åœ¨ä¸­æ–­è°ƒç”¨æ­¤å‡½æ•°  è·å¾—è¿‡é›¶æ—¶åˆ»NTB
+// ¹ıÁã²¶»ñÔÚÖĞ¶Ïµ÷ÓÃ´Ëº¯Êı  »ñµÃ¹ıÁãÊ±¿ÌNTB
 extern uint32_t ZeroCrossx_Get(uint32_t no);
-
 
 typedef void (*NTB_Match_Callback_Fn)(void);
 
-
-//id:0-3;
-//å½“NTBè®¡æ•°å€¼è¾¾åˆ°match_ntbäº§ç”Ÿä¸­æ–­,è°ƒç”¨callback_fn
-//success return 0;
-//error	return -1;
+// id:0-3;
+// µ±NTB¼ÆÊıÖµ´ïµ½match_ntb²úÉúÖĞ¶Ï,µ÷ÓÃcallback_fn
+// success return 0;
+// error	return -1;
 int NTB_TimerStart(uint8_t id, uint32_t match_ntb, NTB_Match_Callback_Fn callback_fn);
 
-//id:0-3;
-//success return 0;
-//error	return -1;
+// id:0-3;
+// success return 0;
+// error	return -1;
 int NTB_TimerStop(uint8_t id);
 
-//NTBä¸­æ–­æœåŠ¡å‡½æ•°,éœ€æ”¾ç½®åˆ°å¯¹åº”çš„ä¸­æ–­æœåŠ¡å‡½æ•°ä¸­
+// NTBÖĞ¶Ï·şÎñº¯Êı,Ğè·ÅÖÃµ½¶ÔÓ¦µÄÖĞ¶Ï·şÎñº¯ÊıÖĞ
 void ntb_interrupt_handler(void);
 
-//BPLCä¸­æ–­æœåŠ¡å‡½æ•°,éœ€æ”¾ç½®åˆ°å¯¹åº”çš„ä¸­æ–­æœåŠ¡å‡½æ•°ä¸­
+// BPLCÖĞ¶Ï·şÎñº¯Êı,Ğè·ÅÖÃµ½¶ÔÓ¦µÄÖĞ¶Ï·şÎñº¯ÊıÖĞ
 void bplc_interrupt_handler(void);
 
+// ³õÊ¼»¯,frq£º0,1,2,3;power:0~0x1f
+void HPLC_PhyInit(uint8_t frq, uint8_t power);
+void HPLC_SouthPhyInit(uint8_t frq, uint8_t power);
+// »ñÈ¡Æµ¶Î,·µ»ØÖµ:0,1,2,3
+uint8_t FrequenceGet(void);
 
-
-
-
-//åˆå§‹åŒ–,frqï¼š0,1,2,3;power:0~0x1f
-void		HPLC_PhyInit(uint8_t frq, uint8_t power);
-void		HPLC_SouthPhyInit(uint8_t frq, uint8_t power);
-//è·å–é¢‘æ®µ,è¿”å›å€¼:0,1,2,3
-uint8_t		FrequenceGet(void);
-
-//è®¡æ•°å¸§è½½è·ç¬¦å·æ•°
-uint32_t	GetSymbolNum(uint8_t tmi, uint8_t tmiExt, uint8_t pb_num);
-//è®¡æ•°å¸§é•¿
-uint32_t	GetFrameLen(uint8_t FC, uint16_t SymbolNum);
-//è·å–NTBå€¼
-uint32_t	GetNTB(void);
-//PHYå¤ä½
-void		HPLC_PhyReset(void);
-//è·å–PLCçŠ¶æ€
+// ¼ÆÊıÖ¡ÔØºÉ·ûºÅÊı
+uint32_t GetSymbolNum(uint8_t tmi, uint8_t tmiExt, uint8_t pb_num);
+// ¼ÆÊıÖ¡³¤
+uint32_t GetFrameLen(uint8_t FC, uint16_t SymbolNum);
+// »ñÈ¡NTBÖµ
+uint32_t GetNTB(void);
+// PHY¸´Î»
+void HPLC_PhyReset(void);
+// »ñÈ¡PLC×´Ì¬
 PLC_STATE BPLC_GetTxState(void);
 PLC_STATE BPLC_GetRxState(void);
-//è®¾ç½®ToneMask   æ­¤å‡½æ•°ç”¨äºæµ‹è¯•æ¨¡å¼ä¸‹ä½¿ç”¨  è®¾ç½®tonemaskå‰ éœ€è¦æŠŠé¢‘æ®µå…ˆåˆ‡æ¢åˆ°å¯¹åº”çš„é¢‘æ®µå†è¿›è¡Œåˆ‡æ¢  å¦åˆ™å‚æ•°ä¼šä¸å¯¹ å¯¼è‡´æ€§èƒ½ä¸‹é™
-void		SetToneMask(uint8_t para);
+// ÉèÖÃToneMask   ´Ëº¯ÊıÓÃÓÚ²âÊÔÄ£Ê½ÏÂÊ¹ÓÃ  ÉèÖÃtonemaskÇ° ĞèÒª°ÑÆµ¶ÎÏÈÇĞ»»µ½¶ÔÓ¦µÄÆµ¶ÎÔÙ½øĞĞÇĞ»»  ·ñÔò²ÎÊı»á²»¶Ô µ¼ÖÂĞÔÄÜÏÂ½µ
+void SetToneMask(uint8_t para);
 void BPLC_SetToneMask(const uint32_t *table, uint16_t valid_tone_num);
-//NTBè°ƒèŠ‚
-int			NTB_Sync_Adjust(uint32_t recvNTB0, uint32_t localNTB0, uint32_t recvNTB1, uint32_t localNTB1);
-int			NTB_Sync_AdjustFarrow(uint32_t recvNTB0, uint32_t localNTB0, uint32_t recvNTB1, uint32_t localNTB1,int32_t *offset);
-//NTBåŒæ­¥
-void 		BPLC_SyncNTB(int32_t offset);
-//NTBè°ƒèŠ‚å¤ä½
-void 		NTB_Reset(void);
+// NTBµ÷½Ú
+int NTB_Sync_Adjust(uint32_t recvNTB0, uint32_t localNTB0, uint32_t recvNTB1, uint32_t localNTB1);
+int NTB_Sync_AdjustFarrow(uint32_t recvNTB0, uint32_t localNTB0, uint32_t recvNTB1, uint32_t localNTB1, int32_t *offset);
+// NTBÍ¬²½
+void BPLC_SyncNTB(int32_t offset);
+// NTBµ÷½Ú¸´Î»
+void NTB_Reset(void);
 int BPLC_TC_Get(void);
-//ç”¨äºæ£€æµ‹çª„å¸¦å™ªå£°  éœ€è¦å®šæ—¶è°ƒç”¨
+// ÓÃÓÚ¼ì²âÕ­´øÔëÉù  ĞèÒª¶¨Ê±µ÷ÓÃ
 void BPLC_StartNbi(void);
 
 int BPLC_Reset();
 
 void PLC_lower_Init(void);
 void PHY_SendCallbackFun(bool_t flag);
-void PHY_SetLineDriver(uint32_t state,uint32_t phase);
-//è·å¾—ä¸åŒtmi ä¸åŒpbå—çš„ç¬¦å·æ•°
+void PHY_SetLineDriver(uint32_t state, uint32_t phase);
+// »ñµÃ²»Í¬tmi ²»Í¬pb¿éµÄ·ûºÅÊı
 uint32_t GetSymbolNum(uint8_t tmi, uint8_t tmiExt, uint8_t pb_num);
-//è®¡ç®—å¸§çš„ä¼ è¾“æ—¶é—´ FC ä¸º1åˆ™åŒ…å«å¸§é•¿å’Œå‰å¯¼çš„æ—¶é—´ ä¸º0åˆ™ä¸åŒ…å«å¸§é•¿å’Œå‰å¯¼  SymbolNumæ˜¯payloadçš„é•¿åº¦è‹¥ä¸º0è¡¨ç¤ºä¸åŒ…å«payload
+// ¼ÆËãÖ¡µÄ´«ÊäÊ±¼ä FC Îª1Ôò°üº¬Ö¡³¤ºÍÇ°µ¼µÄÊ±¼ä Îª0Ôò²»°üº¬Ö¡³¤ºÍÇ°µ¼  SymbolNumÊÇpayloadµÄ³¤¶ÈÈôÎª0±íÊ¾²»°üº¬payload
 uint32_t GetFrameLen(uint8_t FC, uint16_t SymbolNum);
-//è·å–å½“å‰çš„NTBå€¼
+// »ñÈ¡µ±Ç°µÄNTBÖµ
 uint32_t GetNTB(void);
-#define FRAMESYNC_OFFSET		12860
+#define FRAMESYNC_OFFSET 12860
 //extern void BPLC_RecfgPulse(int IsNeedSync);
+
+#define LOW_NBI_GAIN                  11 //µ¥ÏàÏß½ÓÊÕ  NBI GAIN
+#define HIGH_NBI_GAIN                 15//È«ÏàÏß½ÓÊÕ NBI GAIN
 #ifndef FPGA_ENV
 #define PLL_TRIM_ENABLE
 #endif
-extern uint32_t trim_PLL(int32_t freq_diff, uint8_t reset);//*2^24
-#define BPLC_SetReceiveCallback  SetReceiveCallback
-void BPLC_GetWaferID(void * p_id);
+extern uint32_t trim_PLL(int32_t freq_diff, uint8_t reset); //*2^24
+#define BPLC_SetReceiveCallback SetReceiveCallback
+void BPLC_GetWaferID(void *p_id);
 
 int BPLC_CHIP_CHECK(void);
 extern uint16_t HRFCurrentIndex;
-extern u8 fixed_max_txgain;
+
+
+#if defined(ZB204_CHIP)
+	#define HPLC_MIN_POWER_VAL   0
+	#define HPLC_MAX_POWER_VAL   13
+#elif defined(ZB205_CHIP)
+	#define HPLC_MIN_POWER_VAL   0
+	#define HPLC_MAX_POWER_VAL   24
+#elif defined(ZB206_CHIP)
+	#define HPLC_MIN_POWER_VAL   0
+	#define HPLC_MAX_POWER_VAL   14
+#endif
+
 #ifdef __cplusplus
 }
 #endif

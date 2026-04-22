@@ -82,9 +82,11 @@
 *               custom library #define's (e.g. DEF_DISABLED or DEF_ENABLED).
 *********************************************************************************************************
 */
-
+#if defined ( __ICCARM__ )
 #include  <intrinsics.h>
-
+#elif defined ( __GNUC__ )
+#include  <cmsis_compiler.h>
+#endif
 #include  <cpu_def.h>
 #include  <cpu_cfg.h>                                           /* See Note #3.                                         */
 

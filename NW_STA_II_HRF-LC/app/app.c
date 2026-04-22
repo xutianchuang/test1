@@ -57,12 +57,9 @@
 #include "gsmcu_trng.h"
 #include <stdlib.h>
 #include <gsmcuxx_hal_def.h>
+#include "system_inc.h"
 #include "phy_port.h"
-#include "common_includes.h"
-#include "bps_port.h"
-#include "protocol_includes.h"
-
-#include "crclib.h"
+#include "hrf_port.h"
 
 /*
 *********************************************************************************************************
@@ -88,19 +85,19 @@ static  OS_SEM       AppTraceSem;
 
 void  App_CreateTask(void *p_arg);
 
-ARM_MPU_Region_t MPU_table[]={
-  	{ ARM_MPU_RBAR(0,0x10000000),ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,1,1,0, 0,ARM_MPU_REGION_SIZE_1MB)},
-	{ ARM_MPU_RBAR(1,0x10000000),ARM_MPU_RASR(0,ARM_MPU_AP_RO,   0,1,1,0, 0,ARM_MPU_REGION_SIZE_256KB)},
-	{ ARM_MPU_RBAR(2, 0x10000000+256*1024), ARM_MPU_RASR(0, ARM_MPU_AP_RO,   0, 1, 1, 0, 0, ARM_MPU_REGION_SIZE_32KB) },
-	{ ARM_MPU_RBAR(3,FLASH_START_ADDR),ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,0,1,0, 0,ARM_MPU_REGION_SIZE_2MB)},
-	{ ARM_MPU_RBAR(4,0x40000000),ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,1,0,1, 0,ARM_MPU_REGION_SIZE_16MB)},
-	{ ARM_MPU_RBAR(5,0x50000000),ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,1,0,1, 0,ARM_MPU_REGION_SIZE_8MB)},
-
+ARM_MPU_Region_t MPU_table[] = {
+	{ ARM_MPU_RBAR(0, 0x10000000),          ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,1,1,0, 0,ARM_MPU_REGION_SIZE_1MB)},
+	{ ARM_MPU_RBAR(1, 0x10000000),          ARM_MPU_RASR(0, ARM_MPU_AP_RO,   0, 1, 1, 0, 0, ARM_MPU_REGION_SIZE_256KB) },
+	{ ARM_MPU_RBAR(2, 0x10000000+256*1024), ARM_MPU_RASR(0, ARM_MPU_AP_RO,   0, 1, 1, 0, 0, ARM_MPU_REGION_SIZE_64KB) },
+	{ ARM_MPU_RBAR(3, FLASH_AHB_ADDR),      ARM_MPU_RASR(1, ARM_MPU_AP_RO, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_2MB) },
+	{ ARM_MPU_RBAR(4, 0x40000000),          ARM_MPU_RASR(1, ARM_MPU_AP_FULL, 0, 1, 0, 1, 0, ARM_MPU_REGION_SIZE_16MB) },
+	{ ARM_MPU_RBAR(5, 0x50000000),          ARM_MPU_RASR(1,ARM_MPU_AP_FULL, 0,1,0,1, 0,ARM_MPU_REGION_SIZE_8MB)},
 };
 //#pragma location = ".vectors"
 #pragma segment=".vectors"
 void mpu_init(void)
 {
+	//void * sram_start = __section_begin(".vectors");
 	ARM_MPU_Load(MPU_table,sizeof(MPU_table)/sizeof(ARM_MPU_Region_t));
 	ARM_MPU_Enable(MPU_CTRL_ENABLE_Msk);
 }
@@ -124,74 +121,116 @@ void mpu_init(void)
 *
 *********************************************************************************************************
 */
-const u32 myDevicType=0xffff;
-#if DEV_STA
-#if defined(ZB205_CHIP)
-#define FLASH_STOR_DEVEICE_ADDR   0x13000018
-#elif defined(ZB204_CHIP)
-#define FLASH_STOR_DEVEICE_ADDR   0x13000040
-#endif
+
+const u32 CCO_Hard_Type=1;//1‘≠¿¥µƒ”≤º˛ 0–¬µƒ”≤º˛
+
+#define FLASH_STOR_DEVEICE_ADDR   (FLASH_AHB_ADDR|0x40)
 #define P_DEVEICE                 (*(u32*)(FLASH_STOR_DEVEICE_ADDR))
-#define METER_DEVEICE             0x12345678
-#define METER_3PHASE_DEVEICE      0x76543210
-#endif
-//Ê≠§ÂáΩÊï∞ÂøÖÈ°ªÂú®ÂàùÂßãÂåñmpuÂâçË∞ÉÁî®
+#define CCO_NEW_HARD             0x12345678
+#define CCO_OLD_HARD             0x76543210
+u8 g_config_power=0;  //1£∫”√ªß≈‰÷√π¶¬ 
+u8 g_config_hrf_power=0;  //1£∫”√ªß≈‰÷√π¶¬ 
+//¥À∫Ø ˝±ÿ–Î‘⁄≥ı ºªØmpu«∞µ˜”√
 void GetDeveiceType(void)
 {
-	//ÂºïËÑöËØÜÂà´ËÆæÂ§áÁ±ªÂûã
-#ifdef II_STA
-    *(u32*)&myDevicType=3;//meter
-#else
-	if (P_DEVEICE == METER_DEVEICE)
+	//“˝Ω≈ ∂±…Ë±∏¿‡–Õ
+#if DEV_CCO
+
+
+#if 0
+	if (P_DEVEICE==CCO_NEW_HARD)
 	{
-		*(u32 *)&myDevicType = 3; //meter
+		*(u32*)&CCO_Hard_Type=0;//new hard pcb
 		return;
 	}
-	else if (P_DEVEICE == METER_3PHASE_DEVEICE)
+	else if (P_DEVEICE==CCO_OLD_HARD)
 	{
-		*(u32 *)&myDevicType = 7; //meter
+		*(u32*)&CCO_Hard_Type=1;//old hard pcb
 		return;
 	}
-	StaModeOpen();
-	switch (GetStaModeValue())
+	CcoModeOpen();
+	switch (GetCcoModeValue())
 	{
 	case 0:
-		*(u32 *)&myDevicType = 3; //meter
+		*(u32*)&CCO_Hard_Type=0;//new hard pcb
 		break;
 	case 1:
-		*(u32 *)&myDevicType = 7; //3 phase meter
-		break;
+		*(u32*)&CCO_Hard_Type=1;//old hard pcb
 	}
 #endif	
-
+	*(u32*)&CCO_Hard_Type=1;//old hard pcb
+	return;
+#endif
 }
-#include "hplc_data.h"
+
 int main(void)
 {
 	OS_ERR   err;
-#if (CPU_CFG_NAME_EN == DEF_ENABLED)
-	CPU_ERR  cpu_err;
+#if defined(ZB205_CHIP) || defined(ZB206_CHIP)
+    get_efuse_info();
 #endif
 	QSPI_Enable();
 	FLASH_CMD_CONFIG();
+#if (CPU_CFG_NAME_EN == DEF_ENABLED)
+	CPU_ERR  cpu_err;
+#endif
+	u8 power[4];
+	u8 rfpower;
+	if(data_flash_read_straight_with_crc_noadc(STA_POWER_MODE_ADDR,power,4,0xff))
+	{
+		int i=0;
+		for (;i<4;i++)
+		{
+#if (HPLC_MIN_POWER_VAL == 0)
+			if (power[i] > HPLC_MAX_POWER_VAL)
+#else
+			if ((power[i] < HPLC_MIN_POWER_VAL) || (power[i] > HPLC_MAX_POWER_VAL))
+#endif
+			{
+				break;
+			}
+		}
+		if (i>3)
+		{
+			memcpy((void *)HPLC_ChlPower, power, sizeof(HPLC_ChlPower));
+            g_config_power=1;         
+		}
+	}
+	
+	if(data_flash_read_straight_with_crc_noadc(STA_RF_POWER_MODE_ADDR,&rfpower,1,0xff))
+	{	
+#if (HRF_MIN_POWER_VAL == 0)
+		if (rfpower <= HRF_MAX_POWER_VAL)
+#else
+		if ((rfpower >= HRF_MIN_POWER_VAL) && (rfpower <= HRF_MAX_POWER_VAL))
+#endif
+		{
+			*(u8*)(&HRF_LinePower) = rfpower;
+            g_config_hrf_power=1;
+		}
+	}
+	
     GetDeveiceType();
 	FLASH_Init();
 	FLASH_Reset();
 	FLASH_Close();
 	GetDevFlashID();
-	DelayTimerInit();
-	resetReasonInit();
+//	if (!BPLC_CHIP_CHECK())
+//	{
+//		__BKPT(1);
+//	}
 	Protection1MFlashNoVolatile();
-	
-	DataFlashInit();
 	Protection1MFlash();
-//	FLASH_WriteQeFlag();
-	DataFlashClose();
+	DelayTimerInit();
 	HAL_Init();                                                 /* See Note 1.                                          */
 	mpu_init();
 //	Mem_Init();                                                 /* Initialize Memory Managment Module                   */
 	Math_Init();                                                /* Initialize Mathematical Module                       */
+#ifdef FPGA_ENV
+	srand(10);
+#else
 	srand(getTrngRand());
+#endif
 	CloseClockGate();
 #if (CPU_CFG_NAME_EN == DEF_ENABLED)
     CPU_NameSet((CPU_CHAR *)CPU_NAME,
@@ -199,10 +238,6 @@ int main(void)
 #endif
 
 	BSP_IntDisAll();                                            /* Disable all Interrupts.                              */
-
-	crc_table_init();
-
-	NetStatusLedOpen();
 
 	OSInit(&err);                                               /* Init uC/OS-III.                                      */
 	App_OS_SetAllHooks();
