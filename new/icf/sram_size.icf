@@ -1,0 +1,49 @@
+/*###ICF### Section handled by ICF editor, don't touch! ****/
+/*-Editor annotation file-*/
+/* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
+/*-Specials-*/
+define symbol __ICFEDIT_intvec_start__ = 0x10000000;
+define symbol __ICFEDIT_APL_PARAM_start__ = 0x10000200;
+/*-Memory Regions-*/
+define symbol __ICFEDIT_region_RAM_start__ = 0x10000000;
+define symbol __ICFEDIT_region_RAM_end__   = 0x1004FFFF;
+define symbol __ICFEDIT_region_RW_start__ = 0x10050000;
+define symbol __ICFEDIT_region_HRF_start__ = 0x100ff500;
+define symbol __ICFEDIT_region_RW_end__   = 0x100FFFFF;
+
+
+
+/*-Sizes-*/
+define symbol __ICFEDIT_size_cstack__ = 0x1000;
+define symbol __ICFEDIT_size_heap__   = 0x1000;
+/**** End of ICF editor section. ###ICF###*/
+
+define memory mem with size = 4G;
+
+define region RAM_CODE_region   = mem:[from __ICFEDIT_region_RAM_start__   to __ICFEDIT_region_RAM_end__];
+define region RAM_WR_region   = mem:[from __ICFEDIT_region_RW_start__   to __ICFEDIT_region_RW_end__];
+
+define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+
+
+place at address mem:__ICFEDIT_intvec_start__ { readonly section .vectors };
+place at address mem:__ICFEDIT_APL_PARAM_start__ { readonly section .aplParam_RAM };
+place at address mem:__ICFEDIT_region_HRF_start__ { readwrite section .PHY_RX_Buffer_Sector };
+
+
+initialize by copy { readwrite };
+do not initialize  { section .noinit };
+
+define block ROM_CONTRNT
+{
+	readonly,
+};
+
+//place in ROM_region   { readonly };
+place in RAM_CODE_region   { block ROM_CONTRNT };
+place in RAM_WR_region     { readwrite,
+                        		block CSTACK, block HEAP };
+                        
+                        
+                        

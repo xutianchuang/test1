@@ -1,0 +1,12 @@
+#ifndef _SLG_REVISION_H_
+#define _SLG_REVISION_H_
+
+
+#define SLG_BRANCH_NAME					"$SLG_BRANCH_NAME$"
+#define SLG_COMMIT_HASH					(0x$SLG_COMMIT_HASH$)
+#define SLG_COMMIT_DATE					($SLG_COMMIT_DATE$)
+#define SLG_COMMIT_YEAR					($SLG_COMMIT_YEAR$)
+#define SLG_COMMIT_MON					($SLG_COMMIT_MON$)
+
+
+#endif
