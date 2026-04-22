@@ -1,0 +1,1 @@
+copy ..\..\config\board_cco_def.h ..\iar_proj\board_cco_def.h /y
